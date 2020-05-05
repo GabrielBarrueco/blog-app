@@ -1,4 +1,4 @@
-# Restaurant Search App
+# Blog App
 
 Aplicativo desenvolvido com React Native.
 
