@@ -8,9 +8,9 @@ const BlogPostForm = ({ onSubmit, initialValues }) => {
     return(
         <View>
             <Text style={styles.textStyle} >Enter Title</Text>
-            <TextInput style={styles.inputStyle} value={title} onChangeText={(text)=>{setTitle(text)} }/>
+            <TextInput style={styles.InputStyle} value={title} onChangeText={(text)=>{setTitle(text)} }/>
             <Text style={styles.textStyle} >Enter Content</Text>
-            <TextInput style={styles.inputStyle} value={content} onChangeText={(text)=>{setContent(text)}}/>
+            <TextInput style={styles.InputStyle} value={content} onChangeText={(text)=>{setContent(text)}}/>
             <Button 
                 title="Save Blog Post" 
                 onPress={() => onSubmit(title, content)}                
@@ -27,7 +27,7 @@ BlogPostForm.defaultProps = {
 }
 
 const styles = StyleSheet.create({
-    inputStyle : {
+    InputStyle : {
         fontSize: 15,
         borderWidth: 1,
         borderColor: '#333',

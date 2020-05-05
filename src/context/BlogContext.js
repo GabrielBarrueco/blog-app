@@ -1,10 +1,13 @@
 import React, { useReducer } from 'react'
 import createDataContext from './createDataContext'
+import jsonServer from '../api/jsonServer'
 
 const BlogContext = React.createContext()
 
 const blogReducer = (state, action) => {
     switch(action.type){
+        case 'get_blogPost' :
+            return action.payload
         case 'add_blogPost' : 
             return[
                     ...state, 
@@ -25,9 +28,18 @@ const blogReducer = (state, action) => {
     }
 }
 
+const getBlogPost = dispatch => {
+    return async () => {
+       const response = await jsonServer.get('/blogposts')
+
+       dispatch({type: 'get_blogPost', payload: response.data})
+    }
+}
+
 const addBlogPost = dispatch => {
-    return (title, content, callback) => {
-        dispatch({type : 'add_blogPost', payload: {title, content}})
+    return async (title, content, callback) => {
+        await jsonServer.post('/blogPosts', {title : title, content: content})
+        // dispatch({type : 'add_blogPost', payload: {title, content}})
         if(callback){   
             callback()
         }        
@@ -35,7 +47,8 @@ const addBlogPost = dispatch => {
 }   
 
 const editBlogPost = dispatch => {
-    return(id, title, content, callback) => {
+    return async (id, title, content, callback) => {
+        await jsonServer.put(`/blogposts/${id}`, { title: title, content: content })
         dispatch({type: 'edit_blogPost', payload: {id, title, content}})
         if(callback){
             callback()
@@ -44,13 +57,14 @@ const editBlogPost = dispatch => {
 }
 
 const deleteBlogPost = dispatch => {
-    return(id) => {
+    return async (id) => {        
+        await jsonServer.delete(`/blogposts/${id}`)         
         dispatch({type: 'delete_blogPost', payload: id})
     }
 }
 
 export const {Context, Provider} = createDataContext(
     blogReducer,
-    { addBlogPost, editBlogPost ,deleteBlogPost },
-    [{title: 'teste', content: 'conteudo de teste', id: 1}]
+    { addBlogPost, editBlogPost ,deleteBlogPost, getBlogPost },
+    []    
 )
